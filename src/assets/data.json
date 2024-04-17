@@ -1,0 +1,36 @@
+{
+  "student": [
+    {
+      "id": "1",
+      "name": "Mariano Ames",
+      "age": 18,
+      "mobile": "Claro",
+      "email": "delegado@upc.edu.pe",
+      "address": "Callao"
+    },
+    {
+      "id": "2",
+      "name": "Piero Delgado",
+      "age": 19,
+      "mobile": "Entel",
+      "email": "ayudantedelprofesor@upc.edu.pe",
+      "address": "San Borja"
+    },
+    {
+      "id": "1",
+      "name": "lux",
+      "age": "5",
+      "mobile": "9999",
+      "email": "g@gmail",
+      "address": "lima"
+    },
+    {
+      "id": "3",
+      "name": "juli",
+      "age": "4",
+      "mobile": "9999994",
+      "email": "@weihiufhw",
+      "address": "barranca"
+    }
+  ]
+}
