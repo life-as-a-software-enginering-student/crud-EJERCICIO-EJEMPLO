@@ -15,7 +15,13 @@ import { MatSort } from '@angular/material/sort';
 import { NgForm } from '@angular/forms';
 import { MatFormField } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+
+import { HttpDataService } from '../../services/http-data.service';
+import { HttpClientModule } from '@angular/common/http';
+import cloneDeep from 'lodash/cloneDeep';
+
 @Component({
   selector: 'app-student',
   standalone: true,
@@ -27,8 +33,9 @@ import { MatInputModule } from '@angular/material/input';
             MatPaginator,
             MatSort,
             MatFormField,
-            FormsModule, ReactiveFormsModule,
-            MatInputModule
+            FormsModule, ReactiveFormsModule, CommonModule,
+            MatInputModule,
+            HttpClientModule //Modulo para hacer peticiones HTTP
 
   ],
 
@@ -63,11 +70,87 @@ export class StudentComponent implements OnInit {
 
   isEditMode = false; //indicador para saber si el formulario está en modo de edición o no
 
+  //Inyecta el servicio HttpDataService en el constructor para hacer peticiones HTTP
+  constructor(private httpDataService: HttpDataService) {
+    //Inicializa los datos del estudiante
+    this.StudentData = {} as Student;
+  }
+
   //metodo de inicialización que configura la paginación y el ordenamiento de la tabla
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     //traer todos los estudiantes (metodo faltante)
+    this.getAllStudents();
+  }
+  
+  //obtiene todos los estudiantes utilizando el servicio http 
+  getAllStudents() {
+    //Obtiene la lista de estudiantes de la base de datos
+    this.httpDataService.getList().subscribe((response: any) => {
+      this.dataSource.data = response;
+    });
   }
 
+  //Inicia la edición de un elemento seleccionado y establece el formulario en modo de edición
+  editItem(element: any) {
+    //Copia el objeto del elemento seleccionado
+    this.StudentData = cloneDeep(element);
+    this.isEditMode = true;
+  }
+
+  //cancela la edición de un elemento seleccionado y restablece el formulario
+  cancelEdit() {
+    this.isEditMode = false;
+    this.studentForm.resetForm();
+  }
+
+  deleteItem(id: string) {//puede ser any
+    //Elimina un estudiante de la base de datos
+    this.httpDataService.deleteItem(id).subscribe(() => {
+      this.dataSource.data = this.dataSource.data.filter((o: any) => o.id !== id);
+    });
+    
+  }
+
+  //Agrega un nuevo estudiante a la base de datos utilizando el servicio http
+  addStudent() {
+    let maxID: number = 0;
+    maxID = this.dataSource.data.reduce((max: number, student: any) => student.id >max? student.id:max, 0);
+    this.StudentData.id = (Number(maxID)+1).toString(); //concatena, convierte a string 
+
+
+    //Crea un nuevo estudiante en la base de datos
+    this.httpDataService.createItem(this.StudentData).subscribe((response: any) => {
+      this.dataSource.data.push({...response});
+      this.dataSource.data = this.dataSource.data.map(o => o);
+    });
+  }
+
+  //Actualiza un estudiante en la base de datos utilizando el servicio http
+  updateStudent() {
+    //Actualiza un estudiante en la base de datos
+    this.httpDataService.updateItem(this.StudentData.id, this.StudentData).subscribe((response: any) => {
+      this.dataSource.data = this.dataSource.data.map((o: any) => {
+        if (o.id === response.id) {
+          o = this.StudentData;
+        }
+        return o;
+      });
+    });
+  }
+
+  //Maneja la presentación del formulario y la validación de los datos del formulario
+  onSubmit() {
+    if (this.studentForm.form.valid) {
+      if (this.isEditMode)
+        this.updateStudent();
+      else
+        this.addStudent();
+
+      this.cancelEdit();
+    } else {
+      console.log('Invalid Data');
+    }
+  }
 }
