@@ -8,5 +8,6 @@ export const routes: Routes = [
     {path: '', redirectTo: 'students', pathMatch: 'full'},
 
     //Asocia a la ruta '/Students' con el componente StudentComponent
+    //lo que significa que este cpmponente se renderizará cuando la ruta sea '/students'
     {path: 'students', component: StudentComponent }
 ];

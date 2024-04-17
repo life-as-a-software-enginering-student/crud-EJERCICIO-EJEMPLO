@@ -1,0 +1,20 @@
+{
+    "student": [
+        {
+            "id": 1,
+            "name": "Mariano Ames",
+            "age": 18,
+            "mobile": "Claro",
+            "email": "delegado@upc.edu.pe",
+            "address": "Callao"
+        },
+        {
+            "id": 2,
+            "name": "Piero Delgado",
+            "age": 19,
+            "mobile": "Entel",
+            "email": "ayudantedelprofesor@upc.edu.pe",
+            "address": "San Borja"
+        }
+    ]
+}
