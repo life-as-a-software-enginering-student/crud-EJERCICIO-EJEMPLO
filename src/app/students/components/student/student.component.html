@@ -18,19 +18,19 @@
     <!--Formulario para agregar o editar estudiantes-->
     <form (submit)="onSubmit()" #studentForm="ngForm">
         <mat-form-field>
-            <input matInput placeholder="Nombre" name="name" required [(ngModel)]="StudentData.name">
+            <input matInput placeholder="Nombre" name="name" required [(ngModel)]="studentData.name">
         </mat-form-field>
         <mat-form-field>
-            <input type="text" matInput placeholder="edad" name="age" required [(ngModel)]="StudentData.age">
+            <input type="text" matInput placeholder="edad" name="age" required [(ngModel)]="studentData.age">
         </mat-form-field>
         <mat-form-field>
-            <input type="text" matInput placeholder="mobile" name="mobile" required [(ngModel)]="StudentData.mobile">
+            <input type="text" matInput placeholder="mobile" name="mobile" required [(ngModel)]="studentData.mobile">
         </mat-form-field>
         <mat-form-field>
-            <input type="text" matInput placeholder="email" name="email" required [(ngModel)]="StudentData.email">
+            <input type="text" matInput placeholder="email" name="email" required [(ngModel)]="studentData.email">
         </mat-form-field>
         <mat-form-field>
-            <input type="text" matInput placeholder="address" name="address" required [(ngModel)]="StudentData.address">
+            <input type="text" matInput placeholder="address" name="address" required [(ngModel)]="studentData.address">
         </mat-form-field>
 
         <!--Botones para actualizar o cancelar la edición de un estudiante-->

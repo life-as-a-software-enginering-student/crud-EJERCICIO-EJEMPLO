@@ -51,7 +51,7 @@ export class StudentComponent implements OnInit {
   studentForm!: NgForm;
 
   //Datos del estudiante para el formulario y manejo de datos
-  StudentData!: Student;
+  studentData!: Student;
 
 
   //Fuente de datos de la tabla y las columnas que se mostrarán en la tabla
@@ -73,7 +73,7 @@ export class StudentComponent implements OnInit {
   //Inyecta el servicio HttpDataService en el constructor para hacer peticiones HTTP
   constructor(private httpDataService: HttpDataService) {
     //Inicializa los datos del estudiante
-    this.StudentData = {} as Student;
+    this.studentData = {} as Student;
   }
 
   //metodo de inicialización que configura la paginación y el ordenamiento de la tabla
@@ -95,7 +95,7 @@ export class StudentComponent implements OnInit {
   //Inicia la edición de un elemento seleccionado y establece el formulario en modo de edición
   editItem(element: any) {
     //Copia el objeto del elemento seleccionado
-    this.StudentData = cloneDeep(element);
+    this.studentData = cloneDeep(element);
     this.isEditMode = true;
   }
 
@@ -117,11 +117,11 @@ export class StudentComponent implements OnInit {
   addStudent() {
     let maxID: number = 0;
     maxID = this.dataSource.data.reduce((max: number, student: any) => student.id >max? student.id:max, 0);
-    this.StudentData.id = (Number(maxID)+1).toString(); //concatena, convierte a string 
+    this.studentData.id = (Number(maxID)+1).toString(); //concatena, convierte a string 
 
 
     //Crea un nuevo estudiante en la base de datos
-    this.httpDataService.createItem(this.StudentData).subscribe((response: any) => {
+    this.httpDataService.createItem(this.studentData).subscribe((response: any) => {
       this.dataSource.data.push({...response});
       this.dataSource.data = this.dataSource.data.map(o => o);
     });
@@ -130,10 +130,10 @@ export class StudentComponent implements OnInit {
   //Actualiza un estudiante en la base de datos utilizando el servicio http
   updateStudent() {
     //Actualiza un estudiante en la base de datos
-    this.httpDataService.updateItem(this.StudentData.id, this.StudentData).subscribe((response: any) => {
+    this.httpDataService.updateItem(this.studentData.id, this.studentData).subscribe((response: any) => {
       this.dataSource.data = this.dataSource.data.map((o: any) => {
         if (o.id === response.id) {
-          o = this.StudentData;
+          o = this.studentData;
         }
         return o;
       });
